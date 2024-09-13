@@ -1,0 +1,133 @@
+:root
+{
+    --dark-brown: #5c4537;
+    --light-brown: #fae1c7;
+    --medium-brown: #a1826e;
+    --olive: #999966;
+}
+
+body {
+    font-family: monospace, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-brown);
+}
+
+header {
+    /* background-color: var(--light-brown); */
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--medium-brown);
+    color: var(--dark-brown);
+}
+
+nav {
+    background-color: var(--dark-brown);
+    color: var(--light-brown);
+    /* padding: 10px; */
+}
+
+#menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+
+}
+
+#menu a {
+    text-decoration: none;
+    color: var(--light-brown);
+    
+}
+
+#menu > li {
+    background: var(--dark-brown);
+    padding: 0 15px;
+    border: 1px dashed var(--light-brown);
+    position: relative;
+    width: 20%;
+}
+
+#menu li {
+    background: var(--dark-brown);
+    padding:10px;
+    list-style-type: none;
+    border-bottom: 1px dashed var(--light-brown);
+}
+
+#menu li:hover {
+    background: var(--medium-brown);
+}
+
+#menu li ul {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0px;
+    top: 40px;
+    width: 100%;
+}
+
+#menu > li > ul > li {
+    display: none;
+}
+
+
+#menu > li > a {
+    color: var(--light-brown);
+    text-decoration: none;
+
+}
+
+#menu > li:hover > ul > li {
+    display: block;
+}
+
+.description {
+    display: none;
+}
+
+.description:target {
+    display: block;
+}
+
+main {
+    padding: 20px;
+    background-color: var(--light-brown);
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+main table
+{
+    border: 2px dashed var(--olive);
+    padding: 10px;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+td {
+    padding: 0.5em 1em;
+}
+
+td, th {
+    border: 1px dashed var(--olive);
+}
+
+footer {
+    background-color: var(--dark-brown);
+    padding: 5px;
+    text-align: center;
+    border-top: 1px solid var(--medium-brown);
+    color: var(--light-brown);
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+}
+
+main p, h2 {
+    color: var(--dark-brown);
+}
+
