@@ -1,0 +1,42 @@
+:root 
+{
+    --dark-brown: #5c4537;
+    --light-brown: #fae1c7;
+    --medium-brown: #a1826e;
+    --olive: #999966;
+}
+
+body
+{
+    background-color: var(--light-brown);
+    font-family: monospace, sans-serif;
+    font-size: 1.5em;
+}
+
+button
+{
+    background-color: var(--olive);
+    color: var(--light-brown);
+    font-size: 1em;
+    display: flex;
+    margin: 10px;
+}
+
+div
+{
+    border: 2px solid var(--dark-brown);
+    display: flex;
+}
+
+input 
+{
+    margin: 5px;
+    background-color: var(--light-brown);
+}
+
+#task1
+{
+    font-style: italic;
+    margin: 10px;
+}
+
