@@ -26,6 +26,7 @@ div
 {
     border: 2px solid var(--dark-brown);
     display: flex;
+    align-items: center;
 }
 
 input 
@@ -40,3 +41,32 @@ input
     margin: 10px;
 }
 
+.column1
+{
+    background-color: var(--dark-brown);
+}
+
+.column2
+{
+    background-color: var(--medium-brown);
+}
+
+.column3
+{
+    background-color: var(--olive);
+}
+
+table 
+{
+    width: 310px;
+    height: 90px;
+    /* border-collapse: collapse; */
+}
+
+td 
+{
+    
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
