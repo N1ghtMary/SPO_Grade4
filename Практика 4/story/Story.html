@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <title>Story</title>
+    <style type="text/css">
+        span.decision {
+            font-weight:bold;
+            border:thin solid #000000;
+            margin:5px;
+            background-color:#DDDDDD;
+        }
+        span.decisionhover {
+            font-weight:bold;
+            border:thin solid #000000;
+            margin:5px;
+            background-color:#EEBBEE;
+        }
+    </style>
+    <script type="text/javascript">
+        var curScene = 0;
+        var history = [];
+
+        function replaceNodeText(id, newText)
+        {
+            var nodeToChange = document.getElementById(id);
+            nodeToChange.removeChild(nodeToChange.firstChild);
+            nodeToChange.appendChild(document.createTextNode(newText));
+        }    
+
+        function changeScene(decision) {
+            var message = "";
+            switch (curScene) 
+            {
+                case 0:
+                    curScene = 1;
+                    message = "Your journey begins at a fork in the road";
+                    replaceNodeText("decision1", "Go to the Home");
+                    replaceNodeText("decision2", "Go to the Institute");
+                    document.getElementById("decision2").style.visibility = "visible";
+                    break;
+
+                case 1: 
+                    if(decision == 1)
+                    {
+                        curScene = 2;
+                        message = "You have arrived at a cute home";
+                        replaceNodeText("decision1", "Continue");
+                        document.getElementById("decision2").style.visibility = "hidden";
+                    }
+                    else
+                    {
+                        curScene = 3;
+                        message = "You have arrived at the Institute";
+                        replaceNodeText("decision1", "Continue");
+                        document.getElementById("decision2").style.visibility = "hidden";
+                    }
+                    break;
+
+                case 2:
+                    if(decision == 1)
+                    {
+                        curScene = 0;
+                        message = "You have slept all day and story has ended";
+                        replaceNodeText("decision1", "To the start");
+                        document.getElementById("decision2").style.visibility = "hidden";
+                    }
+                    else
+                    {
+                        curScene = 4;
+                        message = "To be continued";
+                        // replaceNodeText("decision1", "To the start");
+                        // document.getElementById("decision2").style.visibility = "hidden";
+                    }
+                    break;
+
+                case 3:
+                    if(decision == 1)
+                    {
+                        curScene = 0;
+                        message = "You have studied all day and story has ended";
+                        replaceNodeText("decision1", "To the start");
+                        document.getElementById("decision2").style.visibility = "hidden";
+                    }
+                    else
+                    {                        
+                        curScene = 4;
+                        message = "To be continued"; 
+                        // replaceNodeText("decision1", "To the start");
+                        // document.getElementById("decision2").style.visibility = "hidden";                         
+                    }
+                    break;
+                default:
+                    message = "Something went wrong";
+                    break;
+            }
+
+            document.getElementById("sceneimg").src = "scene" + curScene + ".png";
+            replaceNodeText("sceneDescription", message);
+            fillHistory(decision, curScene, message);
+        }
+
+        function changeStyle(span)
+        {
+            span.className = "decisionhover";
+        }
+
+        function returnStyle(span)
+        {
+            span.className = "decision";
+        }
+
+        function fillHistory(decision, sceneNumber, message)
+        {
+            var historyDiv = document.getElementById("history");
+            var historyP = document.createElement("p");
+            historyP.appendChild(document.createTextNode(`Decision ${decision} -> Scene ${sceneNumber}: "${message}"`));
+            historyDiv.appendChild(historyP);
+        }
+    </script>
+</head>
+
+<body>
+	<div style "margin-top:100px"; text-align:center">
+		<img id="sceneimg" src="scene0.png" alt ="Student adventure"/><br>
+        <div id="sceneDescription">Your journey begins at a fork in the road</div>
+		Please choose:
+		<span 
+            class="decision" 
+            id="decision1" 
+            value="1" 
+            onclick="changeScene(1)"
+            onmouseover="changeStyle(this)"
+            onmouseout="returnStyle(this)">
+            Choose your way</span> 
+		<span 
+            class="decision" 
+            id="decision2" 
+            value="2" 
+            onclick="changeScene(2)" 
+            style="visibility: hidden;"
+            onmouseover="changeStyle(this)"
+            onmouseout="returnStyle(this)">
+        </span> 
+        <div id="history"></div>
+	</div>
+    
+</body>
+</html>

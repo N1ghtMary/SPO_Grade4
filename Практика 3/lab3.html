@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice 3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section>
+        <p>Task 1</p>
+        <ol id="task1__elements-list">
+            <li onclick="task1Move(this)">Мясо</li>
+            <li onclick="task1Move(this)">Молоко</li>
+            <li onclick="task1Move(this)">Яйца</li>
+            <li onclick="task1Move(this)">Рыба</li>
+            <li onclick="task1Move(this)">Соки</li>
+            <li onclick="task1Move(this)">Воды</li>
+        </ol>
+        <div>
+            <button onclick="task1AddElement()">Add new element</button>
+            <button onclick="task1RemoveElement()">Remove element</button>
+        </div>
+    </section>  
+
+    <section>
+        <p>Task 2</p>
+        <div>
+            <table>
+                <tr>
+                    <th>Свойство</th>
+                    <th>Значение</th>
+                </tr>
+                <tr>
+                    <td>Информация о платформе (ОС)</td>
+                    <td id="task2__os-info"></td>
+                </tr>
+                <tr>
+                    <td>Информация о браузере</td>
+                    <td id="task2__browser-info"></td>
+                </tr>
+                <tr>
+                    <td>Разрешение экрана по горизонтали</td>
+                    <td id="task2__screen-width"></td>
+                </tr>
+                <tr>
+                    <td>Разрешение экрана по вертикали</td>
+                    <td id="task2__screen-height"></td>
+                </tr>
+                <tr>
+                    <td>Ширина доступной области окна браузера</td>
+                    <td id="task2__inner-width"></td>
+                </tr>
+                <tr>
+                    <td>Высота доступной области окна браузера</td>
+                    <td id="task2__inner-height"></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <button id="task2__button_reduce" onclick="task2ReduceButton(this)">Click me</button>
+        </div>
+        <div>    
+            <p id="task2__text">JavaScript is a powerful, complicated, and often misunderstood computer language. 
+                It enables the rapid development of applications in which users can enter data 
+                and view results easily.</p>
+            <button onclick="task2LittleRedButton()">From little red</button>
+            <button onclick="task2BigBrownButton()">To big brown</button>
+        </div>
+    </section>
+
+    <section>
+        <p>Task 3</p>
+
+        <table id="task3__sample-table">
+            <tr>
+                <td>Row1 cell1</td>
+                <td>Row1 cell2</td>
+            </tr>
+            <tr>
+                <td>Row2 cell1</td>
+                <td>Row2 cell2</td>
+            </tr>
+        </table>
+        <div>
+            <input type="button" onclick="task3InsertRow()" value="Insert row"> 
+        </div>
+
+    </section>
+
+    <section>
+        <p>Task 4</p>
+        <p>
+            <a id="task4__example" 
+            type="text/html" 
+            hreflang="en-us" 
+            rel="nofollow" 
+            target="_self" 
+            href="http://www.example.com/">
+            Example.com</a>
+        </p>
+        <div>
+            <button onclick="task4GetAttributes()">Click here to get the attribute's value</button>
+        </div>
+    </section>
+
+    <section>
+        <p>Task 5</p>
+        <div id="task5__data-table"></div>
+        <div>
+            <button onclick="task5CreateTable()">Create table</button>
+        </div>
+    </section>
+
+    <section>
+        <p>Task 6</p>
+        <div>
+            <div>
+                <a href="https://mail.google.com">E-mail</a>
+                <a href="https://colab.research.google.com/">Colab</a>
+                <a href="https://js.do/">JS do</a>
+                <a href="https://market.yandex.ru/">Yandex market</a>
+            </div>
+            <button onclick="task6GetLinkInfo()">Get link info</button>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+:root 
+{
+    --dark-brown: #5c4537;
+    --light-brown: #fae1c7;
+    --medium-brown: #a1826e;
+    --olive: #999966;
+}
+
+body
+{
+    background-color: var(--light-brown);
+    font-family: monospace, sans-serif;
+    font-size: 1.5em;
+}
+
+button
+{
+    background-color: var(--olive);
+    color: var(--light-brown);
+    font-size: 1em;
+    display: flex;
+    margin: 10px;
+}
+
+div
+{
+    border: 2px solid var(--dark-brown);
+    display: flex;
+    align-items: center;
+}
+
+table
+{
+    border: 2px dashed var(--olive);
+    padding: 10px;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+td 
+{
+    padding: 0.5em 1em;
+}
+
+td, th 
+{
+    border: 1px dashed var(--olive);
+}
+
+#task2__button_reduce
+{
+    width: 400px;
+}
+
+div > input
+{
+    background-color: var(--olive);
+    color: var(--light-brown);
+    font-size: 1em;
+    display: flex;
+    margin: 10px;
+}
+
+div > div
+{
+    display: flex;
+    flex-direction: column;
+    border: none;
+    padding: 5px;
+}
