@@ -69,16 +69,18 @@ function task3Divider()
 
 function task4ChangeNumber()
 {
-    var userNumber = prompt('Введите число:');
-    var parsedNumber = parseFloat(userNumber);
+    //var userNumber = prompt('Введите число:');
+    var parsedNumber = parseFloat(document.getElementById('task4Number').value);
     if (isNaN(parsedNumber)) 
     {
-        alert('Incorrect number');
+        document.getElementById('task4').innerHTML = 'Incorrect number';
         return;
     }
     var result = (9 / 14) * parsedNumber;
-    alert(`9/14 from ${parsedNumber} number: ${result}`);
+    document.getElementById('task4').innerHTML = `9/14 from ${parsedNumber} number: ${result}`;
 }
+
+
 
 /*
     Task 5
@@ -94,12 +96,12 @@ function task5Math()
     var userX = parseFloat(document.getElementById('task5NumberX').value);
     if(isNaN(userX)) 
     {
-        alert('Wrong number');
+        document.getElementById('task5').innerHTML = 'Wrong number';
         return;
     }
     var mathExpressionResult = (Math.tan(-6*Math.PI - 5*userX) * Math.cos(( (5 * Math.PI) / 4) + 8 * userX))
                                 /(Math.sin(Math.PI + 8 * userX) * ctg( ((7 * Math.PI) / 3) + userX)) - 12 * userX;
-    alert(`Result: ${mathExpressionResult}`);
+    document.getElementById('task5').innerHTML =`Result: ${mathExpressionResult.toFixed(5)}`;
 }
 
 /*

@@ -19,6 +19,12 @@ header {
     text-align: center;
     border-bottom: 1px solid var(--medium-brown);
     color: var(--dark-brown);
+    display: flex;    
+    justify-content: center;
+}
+header > img
+{
+    margin: 10px;
 }
 
 nav {
@@ -61,6 +67,11 @@ nav {
     background: var(--medium-brown);
 }
 
+#menu > li > ul > li
+{
+    margin: 15px 0;
+}
+
 #menu li ul {
     margin: 0;
     padding: 0;
@@ -78,7 +89,6 @@ nav {
 #menu > li > a {
     color: var(--light-brown);
     text-decoration: none;
-
 }
 
 #menu > li:hover > ul > li {

@@ -1,6 +1,9 @@
 var curScene = 0;
 var curSceneHistory = 0;
 var history = [];
+var historyGoodFinal = historyBadFinal = 0;
+var testHGF = 0;
+var testHBF = 0;
 
 function replaceNodeText(id, newText)
 {
@@ -12,6 +15,12 @@ function replaceNodeText(id, newText)
     // nodeToChange.removeChild(nodeToChange.firstChild);
     // nodeToChange.appendChild(document.createTextNode(newText));
 }    
+
+function clearHistory()
+{
+    history = [];
+    document.getElementById('history').innerHTML = '';
+}
 
 function changeScene(decision) {
     var message = "";
@@ -27,6 +36,7 @@ function changeScene(decision) {
             document.getElementById("decision1").style.display = "inline-block";
             document.getElementById("decision2").style.display = "inline-block";
             document.getElementById("decision3").style.display = "inline-block";
+            document.getElementById("clearSpan").style.display = "none";
             //document.getElementById("decision2c").style.visibility = "visible";
             //document.getElementById("decision3c").style.visibility = "visible";
             break;
@@ -109,19 +119,23 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "На территории Вы нашли несколько полезных вещей и поняли, что мир преобразился, но у Вас недостаточно навыков для его освоения...";
                 replaceNodeText("decision1", "Попробовать снова");
                 //document.getElementById("decision1").style.display = "inline-block";
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             else
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "Поскольку вы не взяли провиант и не обладали навыками выживания в лесу, вы заблудились... ";
                 replaceNodeText("decision1", "Попробовать снова");
                 document.getElementById("decision1").style.display = "inline-block";
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             break;
 
@@ -130,17 +144,21 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "Дорогу осилит идущий. Конец.";
                 replaceNodeText("decision1", "Попробовать снова");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             else
             {                        
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "Город не принял Вас радушием, но Вы нашли заброшенную аптеку, где нашли все необходимое, но Вам нужно было особое питание, которое Вы не могли себе обеспечить и покинули сервер."; 
                 replaceNodeText("decision1", "Попробовать снова");
-                document.getElementById("decision2").style.display = "none";                      
+                document.getElementById("decision2").style.display = "none";   
+                document.getElementById("clearSpan").style.display = "inline-block";                   
             }
             break;
 
@@ -149,9 +167,11 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "На трассе было много брошенных машин, Вы собрали кучу полезного, а приобретенные навыки помогли Вам стать опытным выживальщиком. Но Вы не обрели свой уголок и продожали путешествовать по всему миру без долгих задержек.";
-                replaceNodeText("decision1", "Попробовать снова");
+                replaceNodeText("decision1", "Начать сначала");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             else
             {
@@ -169,17 +189,21 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyGoodFinal++;
                 message = "Широкие улицы, почтовые станции, пожарные отделения, торговые центры... Но где же люди?";
-                replaceNodeText("decision1", "Попробовать снова");
+                replaceNodeText("decision1", "Начать сначала");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             else
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyGoodFinal++;
                 message = "В доме была библиотека, где Вы получили много знаний о мире и ведении быта.";
-                replaceNodeText("decision1", "Попробовать снова");
+                replaceNodeText("decision1", "Начать сначала");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             break;
 
@@ -275,9 +299,11 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "Легкость заключается в том, что нужно смотреть только на объятное.";
                 replaceNodeText("decision1", "Попробовать снова");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             else // farmer gas station
             {
@@ -303,9 +329,11 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "В нем оказалось множество полезных вещей. Вы были так рады, что забыли о предупреждениях.";
                 replaceNodeText("decision1", "Попробовать снова");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             break;
 
@@ -314,17 +342,21 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyGoodFinal++;
                 message = "Ваша наблюдательность и любознательность не позволили Вам пройти мимо каждого кустика и так Вы нашли вход в подземный бункер, где оказались ученые, с которыми Вы провели всю жизнь в попытке разобраться с произошедшим.";
                 replaceNodeText("decision1", "Начать сначала");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             else
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyGoodFinal++;
                 message = "Отличная подготовка позволила Вам избежать всех опасностей и благополучно изучить всю карту.";
                 replaceNodeText("decision1", "Начать сначала");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             break;
 
@@ -352,17 +384,21 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyGoodFinal++;
                 message = "Ваша стряпня поразила постояльцев в самое сердце, Вы даже подвох заметили далеко не сразу.";
                 replaceNodeText("decision1", "Начать сначала");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             else // farmer gas station yes restaurant
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "Посетителей не было, но Вы не грустили благодаря бонусам на нахождение блюд. Жаль только, что лекарство от ожирения Вашему классу не полагалось.";
                 replaceNodeText("decision1", "Попробовать снова");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             break;
 
@@ -371,9 +407,11 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyGoodFinal++;
                 message = "Помимо лопаты Вы обнаружили все необходимое для замеса почвы для грядок и доски для каркаса. Вы соорудили чудесный дом и посадили много вкусняшек. Здоровое сбалансированное питание позволило достичь Вам небывалых высот в исследовательской деятельности и даже найти торговца для бесед под полной луной.";
                 replaceNodeText("decision1", "Начать сначала");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             else // farmer gas station to the store megashop
             {
@@ -410,9 +448,11 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "Ну как же так. А как же смысл класса?";
                 replaceNodeText("decision1", "Попробовать снова");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             else // farmer gas station to the store megashop yes build farmplots
             {
@@ -446,8 +486,10 @@ function changeScene(decision) {
         case 19: // farmer end
             curScene = 0;
             curSceneHistory++;
+            historyGoodFinal++;
             message = "Постояльцам Вы не нравились. Зато многочисленные баффы от еды делали Вас неуязвимым, а значит и владельцем ресурсов.";
             replaceNodeText("decision1", "Начать сначала");
+            document.getElementById("clearSpan").style.display = "inline-block";
             break;
 
         case 20: // traveler from the city
@@ -474,9 +516,11 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyBadFinal++;
                 message = "У Вас получилась отличная большая будка. И Вы с радостью ее расширяли до размеров особняка, что даже забыли смысл класса.";
                 replaceNodeText("decision1", "Попробовать снова");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             } 
             else
             {
@@ -493,26 +537,32 @@ function changeScene(decision) {
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyGoodFinal++;
                 message = "Жажда путешествий не позволила Вам остаться в нем надолго.";
                 replaceNodeText("decision1", "Начать сначала");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             } 
             else
             {
                 curScene = 0;
                 curSceneHistory++;
+                historyGoodFinal++;
                 message = "Все здания всех городов стали известны Вам до пылинки. Но ресурсы не безграничны.";
                 replaceNodeText("decision1", "Начать сначала");
                 document.getElementById("decision2").style.display = "none";
+                document.getElementById("clearSpan").style.display = "inline-block";
             }
             break;
 
         case 23: // traveler from the city yes find home
             curScene = 0;
             curSceneHistory++;
+            historyGoodFinal++;
             message = "Вы полностью посвятили свою жизнь зеленым просторам и составили карту всех пещер и озер.";
             replaceNodeText("decision1", "Начать сначала");
             document.getElementById("decision2").style.display = "none";
+            document.getElementById("clearSpan").style.display = "inline-block";
             break;
 
         default:
@@ -521,8 +571,10 @@ function changeScene(decision) {
     }
 
     document.getElementById("sceneimg").src = "images/scene" + curScene + ".jpg";
-    replaceNodeText("sceneDescription", message);
+    replaceNodeText("sceneDescription", message); // if message start => good if try => bad
+    console.log(message === "Начать сначала" ? testHGF++ : testHBF++);
     fillHistory(decision, curSceneHistory, message);
+    refreshFinalCount(historyGoodFinal, historyBadFinal);
 }
 
 function changeStyle(span)
@@ -542,4 +594,12 @@ function fillHistory(decision, sceneNumber, message)
     historyP.className = "bg-info text-white p-3 mb-2";
     historyP.appendChild(document.createTextNode(`Decision ${decision} -> Scene ${sceneNumber}: "${message}"`));
     historyDiv.appendChild(historyP);
+}
+
+function refreshFinalCount(historyGoodFinal, historyBadFinal)
+{
+    var goodFinalP = document.getElementById("historyGoodFinal");
+    goodFinalP.innerText = `Количество хороших концовок пройдено: ${historyGoodFinal}`;
+    var badFinalP = document.getElementById("historyBadFinal");
+    badFinalP.innerText = `Количество плохих концовок пройдено: ${historyBadFinal}`;
 }

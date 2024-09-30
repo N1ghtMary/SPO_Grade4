@@ -11,17 +11,23 @@ function task1Move(o)
 
 function task1AddElement()
 {
-    var newElementText = prompt('Enter text for the new element:');
-    if (newElementText) 
+    if(document.getElementById('task1__elements-list').getElementsByTagName('li').length >= 15)
     {
-        var newElement = document.createElement('li');
-        newElement.innerText = newElementText;
-        newElement.onclick = function() 
-        { 
-            task1Move(this); 
-        };
-        document.getElementById('task1__elements-list').appendChild(newElement);
-
+        alert('OverflowException');
+    }
+    else
+    {
+        var newElementText = prompt('Enter text for the new element:');
+        if (newElementText) 
+        {
+            var newElement = document.createElement('li');
+            newElement.innerText = newElementText;
+            newElement.onclick = function() 
+            { 
+                task1Move(this); 
+            };
+            document.getElementById('task1__elements-list').appendChild(newElement);
+        }
     }
 }
 
@@ -30,6 +36,40 @@ function task1RemoveElement()
     var elementsList = document.getElementById('task1__elements-list');
     if (elementsList.lastElementChild) elementsList.removeChild(elementsList.lastElementChild);
     else alert('No elemens');
+}
+
+var arrayElemsTask1 = ['cat', 'dog', 'rat', 'frog', 'owl', 'rabbit', 'bee'];
+
+function task1AddRndElements()
+{
+    if(document.getElementById('task1__elements-list').getElementsByTagName('li').length >= 15)
+    {
+        alert('OverflowException');
+    }
+    else
+    {
+        var amountOfElements = Math.floor(Math.random() * 3 + 2);
+        //console.log(amountOfElements);
+        for(var i = 0; i < amountOfElements; i++)
+        {
+            if(document.getElementById('task1__elements-list').getElementsByTagName('li').length >= 15)
+            {
+                alert('OverflowException');
+                break;
+            }
+            else
+            {
+                var newElement = document.createElement('li');
+                newElement.innerText = arrayElemsTask1[Math.floor(Math.random()*arrayElemsTask1.length)];
+                newElement.onclick = function() 
+                { 
+                    task1Move(this); 
+                };
+                document.getElementById('task1__elements-list').appendChild(newElement);
+            }
+        }
+        //console.log(document.getElementById('task1__elements-list').getElementsByTagName('li').length);
+    }
 }
 
 /*
