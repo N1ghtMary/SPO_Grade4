@@ -1,0 +1,73 @@
+:root 
+{
+    --dark-brown: #5c4537;
+    --light-brown: #fae1c7;
+    --medium-brown: #a1826e;
+    --olive: #999966;
+}
+
+body
+{
+    background-color: var(--light-brown);
+    font-family: monospace, sans-serif;
+    font-size: 1.5em;
+}
+
+button
+{
+    background-color: var(--olive);
+    color: var(--light-brown);
+    font-size: 1em;
+    display: flex;
+    margin: 10px;
+}
+
+.task-container
+{
+    border: 2px solid var(--dark-brown);
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+}
+
+table
+{
+    border: 2px dashed var(--olive);
+    padding: 10px;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+td 
+{
+    padding: 0.5em 1em;
+}
+
+td, th 
+{
+    border: 1px dashed var(--olive);
+}
+
+#task7MaiProgress 
+{
+    margin: 10px;
+    width: 100%;
+    height: 30px;
+    position: relative;
+    background-color: var(--light-brown);
+    border: 1px dotted var(--olive);
+}
+  
+#task7MaiBar 
+{
+    background-color: var(--olive);
+    width: 10px;
+    height: 30px;
+    position: absolute;
+}
+
+#task7Table
+{
+    width: 200px;
+    height: 100px;
+}

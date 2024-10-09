@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice 5</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section>
+        <p>Task 1</p>
+        <div class="task-container">   
+            <p id="task1">Today is ..</p>
+        </div>  
+    </section>
+
+    <section>
+        <p>Task 2</p>
+        <div class="task-container">  
+            <input type="number" id="task2Seconds" placeholder="Enter seconds" min="1"> 
+            <button id="task2Button" onclick="task2StartTimer()">Start timer</button>
+            <p id="task2Timer">00:00:00</p>
+        </div>  
+    </section>
+
+    <section>
+        <p>Task 3</p>
+        <div class="task-container">  
+            <p id="task3Birthday"></p>
+        </div>  
+    </section>
+
+    <section>
+        <p>Task 4</p>
+        <div class="task-container"> 
+            <input type="text" id="task4ArrayElements" placeholder="Enter element"> 
+            <button id="task4Add" onclick="task4Add()">Add element</button>
+            <button id="task4Show" onclick="task4Show()">Show added elements</button>
+        </div> 
+        <div class="task-container">
+            <p id="task4Array"></p>
+        </div> 
+    </section>
+
+    <section>
+        <p>Task 5</p>
+        <div class="task-container"> 
+            <p id="task5BeforeFilter"></p>
+        </div>
+        <div>
+            <p id="task5AfterFilter"></p>
+        </div>  
+    </section>
+
+    <section>
+        <p>Task 6</p>
+        <div class="task-container"> 
+            <p id="task6BeforeTortureArray"></p>
+        </div>
+        <div class="task-container">
+            <p id="task6Divided"></p>
+        </div> 
+        <div class="task-container">
+            <p id="task6MultiplicatedArray"></p>
+        </div>  
+    </section>
+
+    <section>
+        <p>Task 7</p>
+        <div class="task-container">  
+            <div id="task7MaiProgress">
+                <div id="task7MaiBar"></div>
+            </div>           
+        </div> 
+        <div class="task-container vertical">
+            <button id="task7StartLearning" onclick="task7StartLearning()">Start learning</button>
+            <p id="task7Grade"></p>
+            <table id="task7Table">
+                <td>
+                    Cell
+                </td>
+            </table>
+        </div>  
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
