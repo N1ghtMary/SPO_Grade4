@@ -6,7 +6,7 @@ const task5BeforeFilterStringify = task5StringifyArray(task5BeforeFilter);
 
 window.onload=function()
 {
-    var date = new Date();
+    var date = new Date(2024,1,1);
     var day = date.getDate() <= 9 ? '0' + date.getDate() : date.getDate();
     var month = (date.getMonth()+1) <= 9 ? '0' + (date.getMonth()+1) : (date.getMonth()+1);
     document.getElementById('task1').innerHTML = 
@@ -20,26 +20,30 @@ window.onload=function()
     document.getElementById('task5AfterFilter').innerText = `Array after filter: \n${JSON.stringify(task5AfterFilter)}`;
 
     task6TortureArray();
+
+    document.getElementById('task7Grade').innerText = 'Enrollee';
+    document.getElementById('task7Congrats').style.visibility = 'hidden'; 
 }
 
 /*
     Task 2
 */
 
-var timerInterval;
+//var timerInterval;
 
 function task2StartTimer() 
 {
     var secondsInput = parseInt(document.getElementById('task2Seconds').value);
     
-    if (isNaN(secondsInput)) {
+    if (isNaN(secondsInput)) 
+    {
         alert('Incorrect input');
         return;
     }
 
     document.getElementById('task2Button').disabled = true;
 
-    timerInterval = setInterval(() => 
+    var timerInterval = setInterval(() => 
         {
             if (secondsInput <= 0) 
             {
@@ -81,7 +85,28 @@ function task3Function()
     console.log(delta);
     document.getElementById("task3Birthday").innerHTML = 
         `My next birthday 15.09.2025, it'll be in ${Math.ceil(delta/24/60/60/1000)} days`;
-    //setTimeout( 'window.location.reload();', 10000 );
+}
+
+function task3Advanced()
+{
+    var userDate = new Date(document.getElementById('task3BirthdayAdvancedInput').value);
+    if(userDate.getFullYear() >= 2025)
+    {
+        var year = (userDate.getMonth() >= 8 && userDate.getDate() > 15) ? userDate.getFullYear()+1 : userDate.getFullYear();
+        console.log(userDate.getMonth());
+        var dateMyBirthday = new Date(year, 8, 15);
+        if(dateMyBirthday.getFullYear() === userDate.getFullYear() &&
+            dateMyBirthday.getMonth() === userDate.getMonth() &&
+            dateMyBirthday.getDate() === userDate.getDate()) document.getElementById("task3BirthdayAdvancedResult").innerHTML = 'Today is my birthday';
+        else
+        {
+            var delta = dateMyBirthday - userDate;
+            document.getElementById("task3BirthdayAdvancedResult").innerHTML = 
+            `My next birthday ${dateMyBirthday.getDate() <= 9 ? '0' + dateMyBirthday.getDate() : dateMyBirthday.getDate()}.${(dateMyBirthday.getMonth() + 1) <= 9 ? '0' + (dateMyBirthday.getMonth() + 1) : (dateMyBirthday.getMonth() + 1)}.${dateMyBirthday.getFullYear()}, 
+            it'll be in ${Math.ceil(delta/24/60/60/1000)} days`;
+        }
+    }
+    else document.getElementById("task3BirthdayAdvancedResult").innerHTML = "Year must be more than 2024";
 }
 
 /*
@@ -166,45 +191,54 @@ function task6TortureArray()
     Task 7
 */
 
-var task7Progress = 0;
-var task7Interval;
 var task7ColorInterval;
 const task7Grade = document.getElementById('task7Grade');
+const task7Congrats = document.getElementById('task7Congrats');
+function task7StartLearning() 
+{
+    var task7Progress = 0;
+    var task7Interval;
 
-function task7StartLearning() {
-    task7Progress = 0;
+    task7Congrats.style.visibility = 'hidden';
     document.getElementById('task7MaiBar').style.width = '0%';
-    document.getElementById('task7Grade').innerText = 'Enrollee';
+    document.getElementById('task7StartLearning').disabled = true;
 
-    task7Interval = setInterval(() => {
+    task7Interval = setInterval(() => 
+    {
         var increaseProgressBar = Math.min(10, 100 - task7Progress);
         task7Progress += increaseProgressBar;
         document.getElementById('task7MaiBar').style.width = task7Progress + '%';
 
-        if (task7Progress < 25) task7Grade.innerText += '1st Grade';
-        else if (task7Progress < 50) task7Grade.innerText += '2nd Grade';
-        else if (task7Progress < 75) task7Grade.innerText += '3rd Grade';
-        else if (task7Progress < 100) task7Grade.innerText += '4th Grade';
+        if (task7Progress < 25) task7Grade.innerText = '1st Grade';
+        else if (task7Progress < 50) task7Grade.innerText = '2nd Grade';
+        else if (task7Progress < 75) task7Grade.innerText = '3rd Grade';
+        else if (task7Progress < 100) task7Grade.innerText = '4th Grade';
         else 
         {
-            clearInterval(interval);
-            startColorChange();
-            document.getElementById('finishButton').style.display = 'block'; // Показываем кнопку завершения
+            clearInterval(task7Interval);
+            task7ChangeColor();
+            task7Congrats.style.visibility = 'visible';
         }
     }, 500);
 }
 
-function startColorChange() {
-    const colorTable = document.getElementById('colorTable');
-    let toggle = true;
-
-    colorInterval = setInterval(() => {
-        colorTable.style.backgroundColor = toggle ? '#ffcccc' : '#ccffcc'; // Переключаем цвета
-        toggle = !toggle;
-    }, 1000); // Каждую секунду
+function task7ChangeColor()
+{
+    var changeColor = true;
+    task7ColorInterval = setInterval(() =>
+    {
+        document.getElementById('task7Table').style.backgroundColor = 
+                                                changeColor ? '#5c4537' : '#a1826e';
+        changeColor = !changeColor;
+    }, 1000);
 }
 
-function stopColorChange() {
-    clearInterval(colorInterval);
-    document.getElementById('finishButton').style.display = 'none'; // Скрываем кнопку завершения
+function task7Graduate() {
+    clearInterval(task7ColorInterval);
+    // task7Congrats.style.visibility = 'hidden'; 
+    // document.getElementById('task7StartLearning').disabled = false;
+    // task7Grade.innerText = 'Enrollee';
+    // document.getElementById('task7MaiBar').style.width = '0%';
+    // document.getElementById('task7Table').style.backgroundColor = '#fae1c7';
+
 }

@@ -1,0 +1,97 @@
+body
+{
+    padding-bottom: 10px;
+}
+
+.bottom-space
+{
+    padding-bottom: 1rem;
+}
+
+.badge
+{
+    font-size: 1.5rem;
+}
+
+.form-check-input:checked 
+{
+    background-color: orange;
+    border-color: orange;
+}
+
+.input-group
+{
+    margin: 10px 0;
+}
+
+.card
+{
+    margin: 15px 0;
+}
+
+button
+{
+    /* margin-bottom: 10px; */
+    margin: 0 auto;
+}
+
+.task14Error
+{
+    margin: auto;
+}
+
+.form-control
+{
+    margin-right: 5px;
+}
+
+.alert
+{
+    padding: 0.4em;
+}
+
+.task2
+{
+    margin-top: 1em;
+}
+
+.btn
+{
+    display: block;
+}
+
+.task15Error
+{
+    margin: 10px 0;
+}
+
+#task15OrderInfo
+{
+    display: flex;
+}
+
+.card-header_change-color
+{
+    background-color: #0dcaf0;
+}
+
+.btn-outline-info
+{
+    margin: 1rem auto;
+}
+
+p
+{
+    margin: 0;
+}
+
+.button-container {
+    display: flex;
+    gap: 1rem;     
+}
+.button-container button {
+    flex: 1; 
+    margin: 0 5px;
+    padding: 10px;
+    box-sizing: border-box; 
+}

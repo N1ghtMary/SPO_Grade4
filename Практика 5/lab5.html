@@ -8,14 +8,14 @@
 </head>
 <body>
     <section>
-        <p>Task 1</p>
+        <p class="task">Task 1</p>
         <div class="task-container">   
             <p id="task1">Today is ..</p>
         </div>  
     </section>
 
     <section>
-        <p>Task 2</p>
+        <p class="task">Task 2</p>
         <div class="task-container">  
             <input type="number" id="task2Seconds" placeholder="Enter seconds" min="1"> 
             <button id="task2Button" onclick="task2StartTimer()">Start timer</button>
@@ -24,14 +24,19 @@
     </section>
 
     <section>
-        <p>Task 3</p>
+        <p class="task">Task 3</p>
         <div class="task-container">  
             <p id="task3Birthday"></p>
         </div>  
+        <div class="task-container">  
+            <input type="date" id="task3BirthdayAdvancedInput" min="2025-01-01">
+            <button id="task3ButtonAdvanced" onclick="task3Advanced()">Count days to the nearest birthday</button>
+            <p id="task3BirthdayAdvancedResult"></p>
+        </div>
     </section>
 
     <section>
-        <p>Task 4</p>
+        <p class="task">Task 4</p>
         <div class="task-container"> 
             <input type="text" id="task4ArrayElements" placeholder="Enter element"> 
             <button id="task4Add" onclick="task4Add()">Add element</button>
@@ -43,17 +48,17 @@
     </section>
 
     <section>
-        <p>Task 5</p>
+        <p class="task">Task 5</p>
         <div class="task-container"> 
             <p id="task5BeforeFilter"></p>
         </div>
-        <div>
+        <div class="task-container">
             <p id="task5AfterFilter"></p>
         </div>  
     </section>
 
     <section>
-        <p>Task 6</p>
+        <p class="task">Task 6</p>
         <div class="task-container"> 
             <p id="task6BeforeTortureArray"></p>
         </div>
@@ -66,7 +71,7 @@
     </section>
 
     <section>
-        <p>Task 7</p>
+        <p class="task">Task 7</p>
         <div class="task-container">  
             <div id="task7MaiProgress">
                 <div id="task7MaiBar"></div>
@@ -75,11 +80,12 @@
         <div class="task-container vertical">
             <button id="task7StartLearning" onclick="task7StartLearning()">Start learning</button>
             <p id="task7Grade"></p>
-            <table id="task7Table">
+            <table id="task7Table" class="congratulation-table">
                 <td>
-                    Cell
+                    Congrats
                 </td>
             </table>
+            <button id="task7Congrats" onclick="task7Graduate()">Finish celebrating graduation</button>
         </div>  
     </section>
 
