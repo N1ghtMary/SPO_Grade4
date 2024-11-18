@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The last survivor blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="blog-style.css">
+</head>
+<body>
+    <header>
+        <img src="logo-blog.png" alt="Garden starter pack logo" width="55px" height="55px">
+        <div>
+            <h1>The last survivor's blog</h1> 
+            <p class="header-small">(inspired by 7dtd&Your shortest adventure in 7DTD (RusEd))</p>
+        </div>
+    </header>
+
+    <div class="container-fluid d-flex">
+        <!-- <form class="d-flex" role="search"> -->
+        <input id="searchInput" class="form-control me-2 " type="search" placeholder="Enter keyword to search" aria-label="Search">
+        <button class="btn btn-outline-success" type="button" id="searchButton" onclick="searchBlog()">Search notes</button>
+        <!-- </form> -->
+    </div>
+    <p class="alert alert-danger" role="alert" id="alertSearch"></p>
+
+    <div class="container-fluid d-flex additional-button">
+        <button class="btn btn-outline-success" type="button" onclick="showBlog()">Show all notes</button>
+        <button class="btn btn-outline-success" type="button" onclick="randomNote()">Show random note</button>   
+    </div>
+
+    <div class="container-fluid d-flex">
+        <input class="form-control me-2" type="date" min="2034-05-24" id="newNoteDate">
+        <input class="form-control me-2" type="text" placeholder="Enter your note" id="newNoteText">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="checkboxImages" onchange="showImagesChBox(this)">
+            <label class="form-check-label" for="checkboxImages">
+              Add image
+            </label>
+        </div>
+        <button class="btn btn-outline-success" id="addNoteButton" type="button" onclick="addNote()">Add note</button>   
+    </div>
+    <div id="imageContainer"></div>
+
+    <div id="notesList"></div>
+
+
+
+
+
+    <footer id="footerSign">Test</footer>
+</body>
+<script src="survBlogTask5.js"></script>
+</html>
