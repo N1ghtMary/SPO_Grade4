@@ -93,7 +93,7 @@ fabricNamesList.push(fabric04);
 
 function task15SearchFabric()
 {
-    var fabricSpecies = prompt('Enter fabric species:').toLowerCase();
+    var fabricSpecies = prompt('Enter fabric species:').toLowerCase().trim();
 
     var findFabric = fabricNamesList.find(function(fabric) 
     {

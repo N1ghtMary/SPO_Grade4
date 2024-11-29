@@ -5,40 +5,79 @@ const CONVERT_TO_DAY = (1000*60*60*24);
 
 $(function() //window onload
 {
-    var vacationPeriodsStorage = JSON.parse(localStorage.getItem('vacationPeriods')) || [];
-//     $('button').on('click', function()
-// {
-//     alert('Test');
-// })
-// const employmentDateField = $('#employmentDate');
-// function startCalculatingVacations()
-// {
-//     console.log(employmentDateField)
-// }
+
+    var buttonStartCalculatingVacations = $('#buttonStartCalculatingVacations');
+    var inputDateOfEmployment = $('#dateOfEmployment');
+
     $('.alert').hide();
     $('#buttonAddVacationPeriod').prop('disabled',true);
     $('#divVacationDates').find('span, input').prop('disabled',true);
     $('#vacationInfoAndActions').hide();
 
-    $('#buttonStartCalculatingVacations').on('click', function()
+    buttonStartCalculatingVacations.on('click', function()
     {
-        var dateOfEmployment = new Date($('#dateOfEmployment').val());
+        var dateOfEmployment = inputDateOfEmployment.val();
+        var parsedDateOfEmployment = new Date(dateOfEmployment);
         var nextYear = new Date(TODAY.getFullYear()+1, 11, 31);
 
-        if(dateOfEmployment < EARLIEST_DATE || dateOfEmployment > TODAY || !$('#dateOfEmployment').val())
+        if(parsedDateOfEmployment < EARLIEST_DATE || parsedDateOfEmployment > TODAY || !dateOfEmployment)
         {
             alert(`Date of employment can\'t be earlier ${formatDate(EARLIEST_DATE)} and later ${formatDate(TODAY)}`);
             return;
         }
 
-        $('#buttonAddVacationPeriod').prop('disabled',false);
-        $(this).prop('disabled',true);
-        $('#dateOfEmployment').prop('disabled',true);
-        $('#pVacationBalance').text(balanceVacationDays(dateOfEmployment, nextYear));
-        $('#pVacationBalance').closest('.alert').show();
-        $('#pVacationDuration').closest('.alert').show();
-        $('#divVacationDates').find('span, input').prop('disabled',false);
+        // $('#buttonAddVacationPeriod').prop('disabled',false);
 
+        $('#buttonAddVacationPeriod').prop('disabled', false);
+        $('#vacationStartDate').prop('disabled',false);
+        $('#vacationEndDate').prop('disabled',false);
+        inputDateOfEmployment.prop('disabled',true);
+        var vacationsPeriodsStorage = localStorage.getItem('vacationPeriods');
+        var parsedVacationPeriodsStorage = JSON.parse(vacationsPeriodsStorage) || [];
+        if(parsedVacationPeriodsStorage[dateOfEmployment])
+        {
+            $('#vacationInfoAndActions').show();
+            $('#vacationInfoAndActions .alert').show();
+            var vacationDurationPlanned = 0;
+            parsedVacationPeriodsStorage[dateOfEmployment].vacations.forEach(element => 
+            {
+                vacationDurationPlanned += element.duration;
+            });
+            $('#pVacationDaysPlanned').text(`${vacationDurationPlanned}`);
+            $('#pVacationDaysLeft').text(`${(28 - (vacationDurationPlanned)) <
+            0 ? 0 : 
+            (28 - (vacationDurationPlanned))}`);
+            parsedVacationPeriodsStorage[dateOfEmployment].vacations.forEach(period =>
+            {
+                $('#vacationDatesTable tbody').append(
+                    `<tr>
+                        <td scope="row">${formatDate(new Date(period.start))}</td>
+                        <td>${formatDate(new Date(period.end))}</td>
+                        <td>${period.duration}</td>
+                    </tr>`
+                )
+            });
+            if($('#pVacationDaysPlanned').text() >= 28)
+            {
+                $('#buttonAddVacationPeriod').prop('disabled', true);
+                $('#vacationStartDate').prop('disabled',true);
+                $('#vacationEndDate').prop('disabled',true);
+            }
+            $(this).prop('disabled',false);
+            inputDateOfEmployment.prop('disabled',false);
+        }
+        else
+        {
+            // $('.alert').hide();
+            $('#divVacationDates').find('span, input').prop('disabled',true);
+            $('#vacationInfoAndActions').hide();
+            $(this).prop('disabled',true);
+
+            $('#divVacationDates').find('span, input').prop('disabled',false);
+        }
+        $('#pVacationBalance').closest('.alert').show();
+        $('#pVacationBalance').text(balanceVacationDays(parsedDateOfEmployment, nextYear).toFixed(2));
+        $('#pVacationDuration').closest('.alert').show();
     });
 
     $('#vacationStartDate, #vacationEndDate').on('change', function()
@@ -55,8 +94,14 @@ $(function() //window onload
 
     $('#buttonAddVacationPeriod').on('click', function()
     {
+        var vacationsPeriodsStorage = localStorage.getItem('vacationPeriods');
+        var parsedVacationPeriodsStorage = JSON.parse(vacationsPeriodsStorage) || [];
+        var dateOfEmployment = inputDateOfEmployment.val();
+        var parsedDateOfEmployment = new Date(dateOfEmployment);
         var startDate = new Date($('#vacationStartDate').val());
         var endDate = new Date($('#vacationEndDate').val());
+
+
         $('#vacationErrorsList').empty();
         var errorList = [];
 
@@ -64,34 +109,42 @@ $(function() //window onload
         {
             errorList.push('One or more date fields are empty.');
         }
-        if(vacationPeriodsStorage.some(period =>
-            (startDate < new Date(period.end)) && (endDate > new Date(period.start))))
+        if(parsedVacationPeriodsStorage[dateOfEmployment])
         {
-            errorList.push("U can\'t add this vacation bc it crosses with the dates already added vacations.");
+            if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period =>
+                (startDate <= new Date(period.end)) && (endDate >= new Date(period.start))))
+            {
+                errorList.push("U can\'t add this vacation bc it crosses with the dates already added vacations.");
+            }
         }
         if(endDate < startDate)
         {
             errorList.push("The end date of the vacation can\'t be earlier than the start date.");
         }
-        if(vacationPeriodsStorage.some(period => new Date(period.start) > startDate))
+        if(parsedVacationPeriodsStorage[dateOfEmployment])
         {
-            errorList.push("U need to create vacations in order & u already have created vacations for a later date.");
+            if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period => new Date(period.start) > startDate))
+            {
+                errorList.push("U need to create vacations in order & u already have created vacations for a later date.");
+            }
         }
         if(startDate < new Date(TODAY.getFullYear()+1,0,1) || endDate > new Date(TODAY.getFullYear()+1,11,31) + 1)
         {
             errorList.push(`It\'s possible to plan only within ${TODAY.getFullYear()+1}`);
         }
 
-        var dateOfEmployment = new Date($('#dateOfEmployment').val());
         var vacationDuration = Math.ceil((endDate - startDate) / CONVERT_TO_DAY) + 1;
-        var availableBalance = balanceVacationDays(dateOfEmployment, endDate);
-        console.log(availableBalance)
+        var availableBalance = balanceVacationDays(parsedDateOfEmployment, endDate);
+
         var vacationDurationPlanned = 0;
-        vacationPeriodsStorage.forEach(element => {
-            vacationDurationPlanned += 
-                Math.ceil(Math.abs(new Date(element.start) - 
-                new Date(element.end)) / CONVERT_TO_DAY) + 1;
-        });
+        
+        if(parsedVacationPeriodsStorage[dateOfEmployment])
+        {
+            parsedVacationPeriodsStorage[dateOfEmployment].vacations.forEach(element => 
+            {
+                vacationDurationPlanned += element.duration;
+            });
+        }
         
         var finalBalance = availableBalance - vacationDurationPlanned - vacationDuration;
         if(finalBalance < -5)
@@ -107,79 +160,101 @@ $(function() //window onload
             errorList.forEach(error =>
                 $('#vacationErrorsList').append(`<div>${error}</div>`)
             );
-            $('#vacationErrorsList').removeClass('alert-success');
-            $('#vacationErrorsList').addClass('alert-danger');
+            $('#vacationErrorsList').removeClass('alert-success').addClass('alert-danger');
             return;
         }
 
-        var vacationTestObject =
+        var vacationsInfoList = [];
+        
+        if(vacationsPeriodsStorage)
         {
-            employment: dateOfEmployment,
-            vacations: [{ start: startDate, end: endDate, duration: vacationDuration}]
+            if(parsedVacationPeriodsStorage[dateOfEmployment])
+            {
+                parsedVacationPeriodsStorage[dateOfEmployment].vacations.forEach(period =>
+                {
+                    vacationsInfoList.push({start: period.start, end: period.end, duration: period.duration})
+                });
+                vacationsInfoList.push({start: startDate, end: endDate, duration: vacationDuration});
+            }
+            else vacationsInfoList.push({start: startDate, end: endDate, duration: vacationDuration});
+
+        }
+        else vacationsInfoList.push({start: startDate, end: endDate, duration: vacationDuration});
+        
+        if (vacationsPeriodsStorage) {
+            var parsedData = parsedVacationPeriodsStorage;
+            parsedData[dateOfEmployment] = { vacations: vacationsInfoList };
+        } else {
+            var parsedData = {};
+            parsedData[dateOfEmployment] = { vacations: vacationsInfoList };
         }
 
-        if(vacationPeriodsStorage)
-
-        vacationPeriodsStorage.push({employment: dateOfEmployment, vacations: [{}]});
-        localStorage.setItem('vacationPeriods', JSON.stringify(vacationPeriodsStorage));
+        localStorage.setItem('vacationPeriods', JSON.stringify(parsedData));
         $('#vacationErrorsList').show().text('Vacation added succesfully.');
-        $('#vacationErrorsList').removeClass('alert-danger');
-        $('#vacationErrorsList').addClass('alert-success');
-
+        $('#vacationErrorsList').removeClass('alert-danger').addClass('alert-success');
+        // $('#vacationErrorsList').addClass('alert-success');
+        $('#vacationDatesTable tbody').empty();
         $('#vacationInfoAndActions').show();
         $('#pVacationDaysPlanned').text(`${vacationDurationPlanned+vacationDuration}`);
         $('#pVacationDaysLeft').text(`${(28 - (vacationDurationPlanned+vacationDuration)) <
             0 ? 0 : 
             (28 - (vacationDurationPlanned+vacationDuration))}`);
 
-        vacationPeriodsStorage.vacations.forEach(period =>
+        parsedData[dateOfEmployment].vacations.forEach(period =>
         {
-            if(vacationPeriodsStorage.employment == dateOfEmployment)
-                {
-                    $('#vacationDatesTable tbody').append(
-                        `<tr>
-                            <td scope="row">${formatDate(new Date(period.vacations.start))}</td>
-                            <td>${formatDate(new Date(period.vacations.end))}</td>
-                            <td>${period.vacations.duration}</td>
-                        </tr>`
-                    )
-                }
-        }
-
-
-        );
+            $('#vacationDatesTable tbody').append(
+                `<tr>
+                    <td scope="row">${formatDate(new Date(period.start))}</td>
+                    <td>${formatDate(new Date(period.end))}</td>
+                    <td>${period.duration}</td>
+                </tr>`
+            )
+        });
 
 
         $('#vacationInfoAndActions .alert').show();
+        $('#vacationEndDate').val('');
+        $('#vacationStartDate').val('');
     });
 
     $('#buttonClearAll').on('click', function()
     {
         localStorage.clear();
+        $('#vacationDatesTable tbody').empty();
+        $('#vacationInfoAndActions, .alert').hide();
+        $('#buttonAddVacationPeriod').prop('disabled',true);
+        $('#divVacationDates').find('span, input').prop('disabled',true).val('');
+        inputDateOfEmployment.prop('disabled',false).val('');
+        buttonStartCalculatingVacations.prop('disabled',false);
+        // $('#pVacationBalance').closest('.alert').hide();
+        // location.reload();
+    });
+   
+
+    $('#buttonEndPlanning').on('click', function()
+    {
+        console.log($('#pVacationDaysPlanned').text())
+        if($('#pVacationDaysPlanned').text() >= 28)
+        {
+            $('#buttonAddVacationPeriod').prop('disabled', true);
+            inputDateOfEmployment.prop('disabled',false);
+            $('#vacationStartDate').prop('disabled',true);
+            $('#vacationEndDate').prop('disabled',true);
+            alert('Congrats! Uve succesfully planned ur vacation!');
+            buttonStartCalculatingVacations.prop('disabled',false);
+        }
+        else
+        {
+            alert('Sorry, but we need to rest a minimum of 28 vacation days for the next year');
+        }
     });
 
-    if(vacationPeriodsStorage.length)
-    {
-        console.log(vacationPeriodsStorage)
-        $('#dateOfEmployment').val((vacationPeriodsStorage.employment).split('T')[0]);
-        $('#vacationInfoAndActions').show();
-        $('#vacationInfoAndActions .alert').show();
-        vacationPeriodsStorage.forEach(period =>
-            $('#vacationDatesTable tbody').append(
-                `<tr>
-                    <td scope="row">${formatDate(new Date(period.vacations.start))}</td>
-                    <td>${formatDate(new Date(period.vacations.end))}</td>
-                    <td>${period.vacations.duration}</td>
-                </tr>`
-            )
-        );
-    }
 });
 
 function balanceVacationDays(dateOfEmployment, periodEnd)
 {
     var balance = periodEnd - dateOfEmployment;
-    return ((VACATION_LENGTH/365) * Math.ceil(balance/24/60/60/1000)).toFixed(2);
+    return ((VACATION_LENGTH/365) * (Math.ceil(balance/24/60/60/1000)+1));
 }
 
 function formatDate(date)

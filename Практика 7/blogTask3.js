@@ -1,5 +1,6 @@
 
 function Blog(body, date, image) {
+    if(!(this instanceof Blog)){return new Blog(body,date, image);} // if u r gonna forget new
     this.body = body;
     this.date = new Date(date);
     this.image = image || "";
@@ -75,7 +76,8 @@ function sortBlogEntries()
 
 function searchBlog() 
 { 
-    var searchText = document.getElementById("searchtext").value.toLowerCase();
+    var searchText = document.getElementById("searchtext").value.toLowerCase().trim();
+    searchText = searchText.replace(/\s{2,}/g, ' ');
     var searchFailElement = document.getElementById("searchfail");  
 
     if(searchText.length < 3) 

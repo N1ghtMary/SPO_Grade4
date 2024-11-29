@@ -108,6 +108,7 @@ function searchBlog()
 { 
     var searchInputClass = document.getElementById('searchInput');
     var searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+    searchInput = searchInput.replace(/\s{2,}/g, ' ');
     searchInputClass.classList.remove('is-invalid');
     var searchFailElement = document.getElementById('alertSearch');  
     searchFailElement.style.display = 'none';
