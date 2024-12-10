@@ -456,17 +456,17 @@ $(function() //window onload
             for(var month in wishDaysPerMonth)
             {
                 var amountOfDaysInMonth = getAmountOfDaysInMonth(month);
-                var remainingDaysInMonth = amountOfDaysInMonth - sumWishDaysPerMonth[month];
-                var endDateForRandom = new Date(NEXT_YEAR, parseInt(month),0);
+                var remainingDaysInMonth = amountOfDaysInMonth - wishDaysPerMonth[month].reduce((a,b) => a+b, 0);//- sumWishDaysPerMonth[month];
+                var startDay = 1;
 
+                wishDaysPerMonth[month].sort((a,b) => b-a);
                 wishDaysPerMonth[month].forEach(function(days)
                 {
-                    var randomDateInMonth = getRandomDateInMonth(parseInt(month), endDateForRandom, remainingDaysInMonth);
+                    //var maxAvailableDaysInMonth = amountOfDaysInMonth - (wishDaysPerMonth[month].reduce((a,b) => a+b, 0) - days) + 1;
+                    var randomDateInMonth = getRandomDateInMonth(parseInt(month), startDay, remainingDaysInMonth);
                     var startDate = new Date(randomDateInMonth);
-                    var endDate = new Date(NEXT_YEAR, parseInt(month), startDate.getDate() + days - 1);
-                    endDateForRandom = endDate;
-                    console.log(startDate);
-                    console.log(endDate);
+                    var endDate = new Date(randomDateInMonth);
+                    endDate.setDate(endDate.getDate() + days - 1);
 
                     var vacationDuration = Math.ceil((endDate - startDate) / CONVERT_TO_DAY) + 1;
                     var availableBalance = balanceVacationDays(parsedDateOfEmployment, endDate);
@@ -488,11 +488,10 @@ $(function() //window onload
                             U can\'t go into the negative for more than 5 days, but u have ${finalBalance.toFixed(2)}
                             days left at the end of ur vacation period.`);
                     }
-                    if(!errorList.length)
-                    {
-                        vacationWishDates.push({ start: startDate, end: endDate });
-                        remainingDaysInMonth -= days;
-                    }
+
+                    vacationWishDates.push({ start: startDate, end: endDate });
+                    startDay = endDate.getDate() + 1;
+                    remainingDaysInMonth += days;
                 });
 
                 if(errorList.length)
@@ -503,38 +502,35 @@ $(function() //window onload
                     );
                     break;
                 }
-
             }
 
-            vacationWishDates.sort((a,b) => a.start = b.start);
-            console.log( vacationWishDates)
+            if(!errorList.length)
+            {
+                console.log(vacationWishDates);
+
+                
+                if(parsedVacationPeriodsStorage[dateOfEmployment])
+                {
+                    var startAdditionalTask8;
+                    var endAdditionalTask8;
+                    if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period =>
+                    {
+                        startAdditionalTask8 = new Date(period.start);
+                        endAdditionalTask8 = new Date(period.end);
+                        return (startDate <= new Date(period.end)) && (endDate >= new Date(period.start))
+                    }))
+                    {
+                        errorList.push(`U can\'t add this vacation bc it crosses with the dates already added vacations: ${formatDate(startAdditionalTask8)} - ${formatDate(endAdditionalTask8)}`);
+                    }
+                }
+                if(endDate < startDate)
+                {
+                    errorList.push("The end date of the vacation can\'t be earlier than the start date.");
+                }
+            }
+            
             // var startDate = new Date($('#vacationStartDate').val());
             // var endDate = new Date($('#vacationEndDate').val());
-
-            // if(parsedVacationPeriodsStorage[dateOfEmployment])
-            // {
-            //     var start;
-            //     var end;
-            //     if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period =>
-            //     {
-            //         start = new Date(period.start);
-            //         end = new Date(period.end);
-            //         return (startDate <= new Date(period.end)) && (endDate >= new Date(period.start))
-            //     }))
-            //     {
-            //         // var periodAdditional = parsedVacationPeriodsStorage[dateOfEmployment].vacations.filter(
-            //         //     period =>
-            //         //     {
-                            
-            //         //     }
-            //         // )
-            //         errorList.push(`U can\'t add this vacation bc it crosses with the dates already added vacations: ${start.toDateString()} - ${end.toDateString()}`);
-            //     }
-            // }
-            // if(endDate < startDate)
-            // {
-            //     errorList.push("The end date of the vacation can\'t be earlier than the start date.");
-            // }
             // if(parsedVacationPeriodsStorage[dateOfEmployment])
             // {
             //     if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period => new Date(period.start) > startDate))
@@ -704,10 +700,13 @@ function validateDays(inputDuration)
     return true;
 }
 
-function getRandomDateInMonth(month, endDate, maxDays)
+function getRandomDateInMonth(month, minDate, maxDate)
 {
-    var amountOfDaysInMonth = getAmountOfDaysInMonth(month);
-    var endRange = amountOfDaysInMonth - maxDays;
-    var randomDay = Math.floor(Math.random() * (endRange - endDate.getDate() +1) + endDate.getDate())+1;
-    return new Date(NEXT_YEAR, month, endDate.getDate()).setDate(randomDay);
+    var start = new Date(NEXT_YEAR, month, minDate);
+    var randomDay = Math.floor(Math.random() * (maxDate - minDate +1))+minDate;
+    return start.setDate(randomDay);
+    // var amountOfDaysInMonth = getAmountOfDaysInMonth(month);
+    // var endRange = amountOfDaysInMonth - maxDays;
+    // var randomDay = Math.floor(Math.random() * (endRange - endDate.getDate() +1) + endDate.getDate())+1;
+    // return new Date(NEXT_YEAR, month, endDate.getDate()).setDate(randomDay);
 }
