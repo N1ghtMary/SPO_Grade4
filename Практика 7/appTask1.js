@@ -1,4 +1,5 @@
 var fabricNamesList = [];
+var fabricList = [];
 const fabricResult = document.getElementById('task15SearchFabricResult');
 
 window.onload = function()
@@ -21,6 +22,7 @@ window.onload = function()
     });
     
     fabricResult.style.visibility='hidden';
+    console.log(fabric01 instanceof Object)
 }
 
 /*
@@ -108,4 +110,36 @@ function task15SearchFabric()
     {
         fabricResult.innerHTML = 'No such fabric';
     }
+}
+
+function taskAdditAddFabric()
+{
+    var collectionYear = Number(document.getElementById('addCollectionYear').value);
+    var species = document.getElementById('addSpecies').value;
+    var color = document.getElementById('addColor').value;
+    var pattern = document.getElementById('addPattern').value;
+    if(collectionYear && species && color && pattern)
+    {
+        var findFabric = fabricNamesList.find(function(fabric) 
+        {
+            return fabric.species.toLowerCase() === species;
+        });
+        if(!findFabric)
+        {
+            var newFabric = Object.create(commonfabric);
+            newFabric.collectionYear = collectionYear;
+            newFabric.species = species;
+            newFabric.color = color;
+            newFabric.pattern = pattern;
+            fabricNamesList.push(newFabric);
+            document.getElementById('task14ChildrenName').innerHTML = '';
+            fabricNamesList.forEach(element => {
+                document.getElementById('task14ChildrenName').innerHTML
+                    +=`<p class="card-text">${element.species}</p>`   
+            });
+        }
+        else alert('This is already exist')
+
+    }
+    else alert('1 or more fields are empty');
 }

@@ -54,6 +54,8 @@ $(function() //window onload
                         <td scope="row">${formatDate(new Date(period.start))}</td>
                         <td>${formatDate(new Date(period.end))}</td>
                         <td>${period.duration}</td>
+                        <td><button class="btn btn-outline-danger fs-4 container-fluid removeVacation"  type="button" 
+                    >Remove</button></td>
                     </tr>`
                 )
             });
@@ -111,10 +113,22 @@ $(function() //window onload
         }
         if(parsedVacationPeriodsStorage[dateOfEmployment])
         {
+            var start;
+            var end;
             if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period =>
-                (startDate <= new Date(period.end)) && (endDate >= new Date(period.start))))
             {
-                errorList.push("U can\'t add this vacation bc it crosses with the dates already added vacations.");
+                start = new Date(period.start);
+                end = new Date(period.end);
+                return (startDate <= new Date(period.end)) && (endDate >= new Date(period.start))
+            }))
+            {
+                // var periodAdditional = parsedVacationPeriodsStorage[dateOfEmployment].vacations.filter(
+                //     period =>
+                //     {
+                        
+                //     }
+                // )
+                errorList.push(`U can\'t add this vacation bc it crosses with the dates already added vacations: ${start.toDateString()} - ${end.toDateString()}`);
             }
         }
         if(endDate < startDate)
@@ -125,7 +139,7 @@ $(function() //window onload
         {
             if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period => new Date(period.start) > startDate))
             {
-                errorList.push("U need to create vacations in order & u already have created vacations for a later date.");
+                errorList.push("U need to create vacations in order & u already have created vacations for a later date");
             }
         }
         if(startDate < new Date(TODAY.getFullYear()+1,0,1) || endDate > new Date(TODAY.getFullYear()+1,11,31) + 1)
@@ -207,6 +221,9 @@ $(function() //window onload
                     <td scope="row">${formatDate(new Date(period.start))}</td>
                     <td>${formatDate(new Date(period.end))}</td>
                     <td>${period.duration}</td>
+                    <td><button 
+                        class="btn btn-outline-danger fs-4 container-fluid removeVacation" 
+                    >Remove</button></td>
                 </tr>`
             )
         });
@@ -249,7 +266,106 @@ $(function() //window onload
         }
     });
 
+    $(document).on('click', '.removeVacation', function()
+    {
+        var index = $(this).data('index');
+        var dateOfEmployment = inputDateOfEmployment.val();
+        var vacationsPeriodsStorage = localStorage.getItem('vacationPeriods');
+        var parsedVacationPeriodsStorage = JSON.parse(vacationsPeriodsStorage) || [];
+
+        if(parsedVacationPeriodsStorage[dateOfEmployment])
+        {
+            parsedVacationPeriodsStorage[dateOfEmployment].vacations.splice(index, 1);
+            localStorage.setItem('vacationPeriods', JSON.stringify(parsedVacationPeriodsStorage));
+            updateVacationCounts(dateOfEmployment, parsedVacationPeriodsStorage);
+
+            
+            $('#vacationDatesTable tbody').empty();
+            parsedVacationPeriodsStorage[dateOfEmployment].vacations.forEach((period, index) =>
+            {
+                $('#vacationDatesTable tbody').append(
+                    `<tr data-index="${index}">
+                        <td scope="row">${formatDate(new Date(period.start))}</td>
+                        <td>${formatDate(new Date(period.end))}</td>
+                        <td>${period.duration}</td>
+                        <td><button 
+                            class="btn btn-outline-danger fs-4 container-fluid removeVacation"
+                            data-index="${index}"
+                        >Remove</button></td>
+                    </tr>`
+                );
+            });
+
+            if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.length === 0) {
+                $('#vacationInfoAndActions').hide();
+            }
+        }
+
+
+
+        // console.log(1);
+        // var vacationsPeriodsStorage = localStorage.getItem('vacationPeriods');
+        // var parsedVacationPeriodsStorage = JSON.parse(vacationsPeriodsStorage) || [];
+        // var dateOfEmployment = inputDateOfEmployment.val();
+        // var parsedDateOfEmployment = new Date(dateOfEmployment);
+        // var startDate = new Date($('#vacationStartDate').val());
+        // var endDate = new Date($('#vacationEndDate').val());
+    
+        // var parsedData = parsedVacationPeriodsStorage;
+        // parsedData[dateOfEmployment] = { vacations: vacationsInfoList };
+        // var vacationsInfoList = [];
+        
+        // var row = $(this).closest('tr'); 
+        // var rowData = [];
+    
+        // row.find('td').each(function() {
+        //     rowData.push($(this).text().trim()); 
+        // });
+    
+        // console.log(rowData);
+        // console.log(parsedData);
+        // console.log(parsedData.vacations);
+    
+        // if(vacationsPeriodsStorage)
+        // {
+        //     if(parsedVacationPeriodsStorage[dateOfEmployment])
+        //     {
+        //         parsedVacationPeriodsStorage[dateOfEmployment].vacations.forEach(period =>
+        //         {
+        //             vacationsInfoList.push({start: period.start, end: period.end, duration: period.duration})
+        //         });
+        //         vacationsInfoList.push({start: startDate, end: endDate, duration: vacationDuration});
+        //     }
+        //     else vacationsInfoList.push({start: startDate, end: endDate, duration: vacationDuration});
+    
+        // }
+        // else vacationsInfoList.push({start: startDate, end: endDate, duration: vacationDuration});
+        
+        
+        // } else {
+        //     var parsedData = {};
+        //     parsedData[dateOfEmployment] = { vacations: vacationsInfoList };
+        // }
+    
+        //localStorage.setItem('vacationPeriods', JSON.stringify(parsedData));
+    
+        // parsedData[dateOfEmployment].vacations.forEach(period =>
+        //     {
+        //         $('#vacationDatesTable tbody').append(
+        //             `<tr>
+        //                 <td scope="row">${formatDate(new Date(period.start))}</td>
+        //                 <td>${formatDate(new Date(period.end))}</td>
+        //                 <td>${period.duration}</td>
+        //                 <td><button class="btn btn-outline-danger fs-4 container-fluid"  type="button" 
+        //                 id="removeVacation">Remove</button></td>
+        //             </tr>`
+        //         )
+        //     });
+    });
+
 });
+
+
 
 function balanceVacationDays(dateOfEmployment, periodEnd)
 {
@@ -264,4 +380,23 @@ function formatDate(date)
     var year = date.getFullYear();
 
     return `${day}.${month}.${year}`;
+}
+
+function updateVacationCounts(dateOfEmployment, parsedData) 
+{
+    var vacationDurationPlanned = 0;
+    
+    if(parsedData[dateOfEmployment]) {
+        parsedData[dateOfEmployment].vacations.forEach(period => 
+        {
+            vacationDurationPlanned += period.duration;
+        });
+    }
+
+    $('#pVacationDaysPlanned').text(`${vacationDurationPlanned}`);
+    $('#pVacationDaysLeft').text(`${(28 - vacationDurationPlanned) < 0 ? 0 : (28 - vacationDurationPlanned)}`);
+    $('#buttonAddVacationPeriod').prop('disabled', false);
+    $('#vacationStartDate').prop('disabled',false);
+    $('#vacationEndDate').prop('disabled',false);
+    $('#pVacationDuration').text('0');
 }
