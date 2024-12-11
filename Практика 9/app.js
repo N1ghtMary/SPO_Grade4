@@ -42,9 +42,9 @@ $(function() //window onload
                     max="31"
                     id="durationWish1">
                 <button 
-                    class="btn btn-outline-danger fs-4" 
+                    class="btn btn-outline-danger fs-4 buttonRemoveWish" 
                     type="button" 
-                    id="buttonRemoveWish">
+                    id="buttonRemoveWish1">
                     Remove
                 </button>
             </div>
@@ -359,6 +359,7 @@ $(function() //window onload
         }
     });
 
+    var uniqueWishes = 2;
     $('#buttonAddWish').on('click', function()
     {
         var amountOfWishes = $('div > select').length;
@@ -367,20 +368,18 @@ $(function() //window onload
             $('#divInputWishes').append(
                 `
                 <div class="input-group mb-3 input-group-lg">
-                    <label class="input-group-text" for="inputGroupSelectWish${amountOfWishes+1}">Month</label>
-                    <select class="form-select" id="inputGroupSelectWish${amountOfWishes+1}">
+                    <label class="input-group-text" for="inputGroupSelectWish${uniqueWishes}">Month</label>
+                    <select class="form-select" id="inputGroupSelectWish${uniqueWishes}">
                     </select>
                     <span class="input-group-text">Duration</span>
                     <input 
                         type="number" 
                         class="form-control duration" 
                         min="1"
-                        max="31"
-                        id="durationWish${amountOfWishes+1}">
+                        max="31">
                     <button 
-                        class="btn btn-outline-danger fs-4" 
-                        type="button" 
-                        id="buttonRemoveWish">
+                        class="btn btn-outline-danger fs-4 buttonRemoveWish" 
+                        type="button">
                         Remove
                     </button>
                 </div>
@@ -389,13 +388,14 @@ $(function() //window onload
             
             $.each(monthListForSelects, function(i, month)
             {
-                $(`#inputGroupSelectWish${amountOfWishes+1}`).append($('<option>',
+                $(`#inputGroupSelectWish${uniqueWishes}`).append($('<option>',
                     {
                         value: i++,
                         text: month
                     }
                 ));
-            })
+            });
+            uniqueWishes++;
         }
         else alert('U can add <= 5 wishes');
     });
@@ -407,6 +407,7 @@ $(function() //window onload
 
     $('#buttonShowVacation').on('click', function()
     {
+        uniqueWishes=2;
         var wishesVacationErrorsList = $('#wishesVacationErrorsList');
         var dateOfEmployment = inputDateOfEmployment.val();
         var parsedDateOfEmployment = new Date(dateOfEmployment);
@@ -415,6 +416,10 @@ $(function() //window onload
         var errorList = [];
         var sumWishDays = 0;
         var vacationWishDates = [];
+        var vacationDuration = 0;
+        var availableBalance = 0;
+        var vacationDurationPlanned = 0;
+
         sumWishDaysPerMonth = {};
         wishDaysPerMonth = {};
 
@@ -453,13 +458,14 @@ $(function() //window onload
             var vacationsPeriodsStorage = localStorage.getItem('vacationPeriods');
             var parsedVacationPeriodsStorage = JSON.parse(vacationsPeriodsStorage) || [];
             
+            
             for(var month in wishDaysPerMonth)
             {
                 var amountOfDaysInMonth = getAmountOfDaysInMonth(month);
                 var remainingDaysInMonth = amountOfDaysInMonth - wishDaysPerMonth[month].reduce((a,b) => a+b, 0);//- sumWishDaysPerMonth[month];
                 var startDay = 1;
 
-                wishDaysPerMonth[month].sort((a,b) => b-a);
+                //wishDaysPerMonth[month].sort((a,b) => b-a);
                 wishDaysPerMonth[month].forEach(function(days)
                 {
                     //var maxAvailableDaysInMonth = amountOfDaysInMonth - (wishDaysPerMonth[month].reduce((a,b) => a+b, 0) - days) + 1;
@@ -468,10 +474,10 @@ $(function() //window onload
                     var endDate = new Date(randomDateInMonth);
                     endDate.setDate(endDate.getDate() + days - 1);
 
-                    var vacationDuration = Math.ceil((endDate - startDate) / CONVERT_TO_DAY) + 1;
-                    var availableBalance = balanceVacationDays(parsedDateOfEmployment, endDate);
+                    vacationDuration = Math.ceil((endDate - startDate) / CONVERT_TO_DAY) + 1;
+                    availableBalance = balanceVacationDays(parsedDateOfEmployment, endDate);
     
-                    var vacationDurationPlanned = 0;
+                    vacationDurationPlanned = 0;
                     
                     if(parsedVacationPeriodsStorage[dateOfEmployment])
                     {
@@ -489,7 +495,7 @@ $(function() //window onload
                             days left at the end of ur vacation period.`);
                     }
 
-                    vacationWishDates.push({ start: startDate, end: endDate });
+                    vacationWishDates.push({ start: startDate, end: endDate, duration: days});
                     startDay = endDate.getDate() + 1;
                     remainingDaysInMonth += days;
                 });
@@ -508,61 +514,112 @@ $(function() //window onload
             {
                 console.log(vacationWishDates);
 
-                
-                if(parsedVacationPeriodsStorage[dateOfEmployment])
+                vacationWishDates.sort((a,b) => b.startDate-a.startDate);
+                vacationWishDates.forEach(periodWish =>
                 {
-                    var startAdditionalTask8;
-                    var endAdditionalTask8;
-                    if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period =>
+                    if(parsedVacationPeriodsStorage[dateOfEmployment])
                     {
-                        startAdditionalTask8 = new Date(period.start);
-                        endAdditionalTask8 = new Date(period.end);
-                        return (startDate <= new Date(period.end)) && (endDate >= new Date(period.start))
-                    }))
-                    {
-                        errorList.push(`U can\'t add this vacation bc it crosses with the dates already added vacations: ${formatDate(startAdditionalTask8)} - ${formatDate(endAdditionalTask8)}`);
+                        var startAdditionalTask8;
+                        var endAdditionalTask8;
+                        if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period =>
+                        {
+                            startAdditionalTask8 = new Date(period.start);
+                            endAdditionalTask8 = new Date(period.end);
+                            return (periodWish.startDate <= new Date(period.end)) && (periodWish.endDate >= new Date(period.start))
+                        }))
+                        {
+                            errorList.push(`U can\'t add this vacation bc it crosses with the dates already added vacations: ${formatDate(startAdditionalTask8)} - ${formatDate(endAdditionalTask8)}`);
+                        }
                     }
-                }
-                if(endDate < startDate)
+
+                    if(periodWish.endDate < periodWish.startDate)
+                    {
+                        errorList.push("The end date of the vacation can\'t be earlier than the start date.");
+                    }
+
+                    if(parsedVacationPeriodsStorage[dateOfEmployment])
+                    {
+                        if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period => new Date(period.start) > periodWish.startDate))
+                        {
+                            errorList.push("U need to create vacations in order & u already have created vacations for a later date");
+                        }
+                    }
+                    if(periodWish.startDate < new Date(NEXT_YEAR,0,1) || periodWish.endDate > new Date(NEXT_YEAR,11,31) + 1)
+                    {
+                        errorList.push(`It\'s possible to plan only within ${NEXT_YEAR}`);
+                    }
+                });
+
+                if(!errorList.length)
                 {
-                    errorList.push("The end date of the vacation can\'t be earlier than the start date.");
+                    var vacationsInfoList = [];
+            
+                    console.log(vacationWishDates)
+                    vacationWishDates.forEach(periodWish =>
+                    {
+                        if(vacationsPeriodsStorage)
+                        {
+                            if(parsedVacationPeriodsStorage[dateOfEmployment])
+                            {
+                                parsedVacationPeriodsStorage[dateOfEmployment].vacations.forEach(period =>
+                                {
+                                    vacationsInfoList.push({start: period.start, end: period.end, duration: period.duration})
+                                });
+                                vacationsInfoList.push({start: periodWish.start.toISOString().split('Z')[0], end: periodWish.end.toISOString().split('Z')[0], duration: periodWish.duration});
+                            }
+                            else vacationsInfoList.push({start: periodWish.start.toISOString().split('Z')[0], end: periodWish.end.toISOString().split('Z')[0], duration: periodWish.duration});
+                        }
+                        else vacationsInfoList.push({start: periodWish.start.toISOString().split('Z')[0], end: periodWish.end.toISOString().split('Z')[0], duration: periodWish.duration});
+                        vacationDurationPlanned += periodWish.duration;
+                    });
+
+                    if (vacationsPeriodsStorage) 
+                    {
+                        var parsedData = parsedVacationPeriodsStorage;
+                        parsedData[dateOfEmployment] = { vacations: vacationsInfoList };
+                    } 
+                    else 
+                    {
+                        var parsedData = {};
+                        parsedData[dateOfEmployment] = { vacations: vacationsInfoList };
+                    }
+
+                    localStorage.setItem('vacationPeriods', JSON.stringify(parsedData));
+
+                    wishesVacationErrorsList.show().text('Vacation added succesfully.');
+                    wishesVacationErrorsList.removeClass('alert-danger').addClass('alert-success');
+                    // $('#vacationErrorsList').addClass('alert-success');
+                    $('#vacationDatesTable tbody').empty();
+                    $('#vacationInfoAndActions').show();
+                    $('#pVacationDaysPlanned').text(`${vacationDurationPlanned}`);
+                    $('#pVacationDaysLeft').text(`${(28 - (vacationDurationPlanned)) <
+                        0 ? 0 : 
+                        (28 - (vacationDurationPlanned))}`);
+
+                    parsedData[dateOfEmployment].vacations.forEach(period =>
+                    {
+                        $('#vacationDatesTable tbody').append(
+                            `<tr>
+                                <td scope="row">${formatDate(new Date(period.start))}</td>
+                                <td>${formatDate(new Date(period.end))}</td>
+                                <td>${period.duration}</td>
+                                <td><button 
+                                    class="btn btn-outline-danger fs-4 container-fluid removeVacation" 
+                                >Remove</button></td>
+                            </tr>`
+                        )
+                    });
+
+
+                    $('#vacationInfoAndActions .alert').show();
                 }
+                
+                
             }
             
             // var startDate = new Date($('#vacationStartDate').val());
             // var endDate = new Date($('#vacationEndDate').val());
-            // if(parsedVacationPeriodsStorage[dateOfEmployment])
-            // {
-            //     if(parsedVacationPeriodsStorage[dateOfEmployment].vacations.some(period => new Date(period.start) > startDate))
-            //     {
-            //         errorList.push("U need to create vacations in order & u already have created vacations for a later date");
-            //     }
-            // }
-            // if(startDate < new Date(TODAY.getFullYear()+1,0,1) || endDate > new Date(TODAY.getFullYear()+1,11,31) + 1)
-            // {
-            //     errorList.push(`It\'s possible to plan only within ${TODAY.getFullYear()+1}`);
-            // }
-
-            // var vacationDuration = Math.ceil((endDate - startDate) / CONVERT_TO_DAY) + 1;
-            // var availableBalance = balanceVacationDays(parsedDateOfEmployment, endDate);
-
-            // var vacationDurationPlanned = 0;
-            
-            // if(parsedVacationPeriodsStorage[dateOfEmployment])
-            // {
-            //     parsedVacationPeriodsStorage[dateOfEmployment].vacations.forEach(element => 
-            //     {
-            //         vacationDurationPlanned += element.duration;
-            //     });
-            // }
-            
-            // var finalBalance = availableBalance - vacationDurationPlanned - vacationDuration;
-            // if(finalBalance < -5)
-            // {
-            //     errorList.push(`Not enough balance days to taking this vacation period.
-            //         U can\'t go into the negative for more than 5 days, but u have ${finalBalance.toFixed(2)}
-            //         days left at the end of ur vacation period.`);
-            // }
+            // 
 
             // if(errorList.length)
             // {
@@ -574,58 +631,12 @@ $(function() //window onload
             //     return;
             // }
 
-            // var vacationsInfoList = [];
+            // 
             
-            // if(vacationsPeriodsStorage)
-            // {
-            //     if(parsedVacationPeriodsStorage[dateOfEmployment])
-            //     {
-            //         parsedVacationPeriodsStorage[dateOfEmployment].vacations.forEach(period =>
-            //         {
-            //             vacationsInfoList.push({start: period.start, end: period.end, duration: period.duration})
-            //         });
-            //         vacationsInfoList.push({start: startDate, end: endDate, duration: vacationDuration});
-            //     }
-            //     else vacationsInfoList.push({start: startDate, end: endDate, duration: vacationDuration});
-
-            // }
-            // else vacationsInfoList.push({start: startDate, end: endDate, duration: vacationDuration});
-            
-            // if (vacationsPeriodsStorage) {
-            //     var parsedData = parsedVacationPeriodsStorage;
-            //     parsedData[dateOfEmployment] = { vacations: vacationsInfoList };
-            // } else {
-            //     var parsedData = {};
-            //     parsedData[dateOfEmployment] = { vacations: vacationsInfoList };
-            // }
-
-            // localStorage.setItem('vacationPeriods', JSON.stringify(parsedData));
-            // $('#vacationErrorsList').show().text('Vacation added succesfully.');
-            // $('#vacationErrorsList').removeClass('alert-danger').addClass('alert-success');
-            // // $('#vacationErrorsList').addClass('alert-success');
-            // $('#vacationDatesTable tbody').empty();
-            // $('#vacationInfoAndActions').show();
-            // $('#pVacationDaysPlanned').text(`${vacationDurationPlanned+vacationDuration}`);
-            // $('#pVacationDaysLeft').text(`${(28 - (vacationDurationPlanned+vacationDuration)) <
-            //     0 ? 0 : 
-            //     (28 - (vacationDurationPlanned+vacationDuration))}`);
-
-            // parsedData[dateOfEmployment].vacations.forEach(period =>
-            // {
-            //     $('#vacationDatesTable tbody').append(
-            //         `<tr>
-            //             <td scope="row">${formatDate(new Date(period.start))}</td>
-            //             <td>${formatDate(new Date(period.end))}</td>
-            //             <td>${period.duration}</td>
-            //             <td><button 
-            //                 class="btn btn-outline-danger fs-4 container-fluid removeVacation" 
-            //             >Remove</button></td>
-            //         </tr>`
-            //     )
-            // });
 
 
-            // $('#vacationInfoAndActions .alert').show();
+            // 
+            // 
             // $('#vacationEndDate').val('');
             // $('#vacationStartDate').val('');
         }
@@ -636,6 +647,11 @@ $(function() //window onload
                 wishesVacationErrorsList.append(`<div>${error}</div>`)
             );
         }
+    });
+
+    $(document).on('click', '.buttonRemoveWish', function()
+    {
+        $(this).closest('div.input-group').remove();
     });
 });
 
@@ -702,9 +718,11 @@ function validateDays(inputDuration)
 
 function getRandomDateInMonth(month, minDate, maxDate)
 {
-    var start = new Date(NEXT_YEAR, month, minDate);
+    minDate++;
+    //var start = new Date(NEXT_YEAR, month, minDate);
     var randomDay = Math.floor(Math.random() * (maxDate - minDate +1))+minDate;
-    return start.setDate(randomDay);
+    return new Date(NEXT_YEAR, month, randomDay);
+    //return start.setDate(randomDay);
     // var amountOfDaysInMonth = getAmountOfDaysInMonth(month);
     // var endRange = amountOfDaysInMonth - maxDays;
     // var randomDay = Math.floor(Math.random() * (endRange - endDate.getDate() +1) + endDate.getDate())+1;
