@@ -49,7 +49,6 @@ function task1AddRndElements()
     else
     {
         var amountOfElements = Math.floor(Math.random() * 3 + 2);
-        //console.log(amountOfElements);
         for(var i = 0; i < amountOfElements; i++)
         {
             if(document.getElementById('task1__elements-list').getElementsByTagName('li').length >= 15)
@@ -68,7 +67,6 @@ function task1AddRndElements()
                 document.getElementById('task1__elements-list').appendChild(newElement);
             }
         }
-        //console.log(document.getElementById('task1__elements-list').getElementsByTagName('li').length);
     }
 }
 
@@ -156,7 +154,7 @@ function task4GetAttributes()
 function task5CreateTable()
 {
     var div = document.getElementById('task5__data-table');
-    if (div.querySelector('table')) //  получает первый элемент, соответствующий заданному CSS-селектору
+    if (div.querySelector('table')) // 1st element of task5__data-table with <table>
     {
         alert('The surname table exists');
         return;

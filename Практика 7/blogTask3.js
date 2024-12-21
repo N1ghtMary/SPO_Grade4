@@ -37,8 +37,7 @@ Blog.prototype.toHTML = function()
     var month = (this.date.getMonth()+1) <= 9 ? '0' + (this.date.getMonth()+1) : (this.date.getMonth()+1);
     var hasImageTag = "";
     var htmlText = ""; 
-    // if (index % 2 !==0) htmlText += "<p style='background-color:#EEEEEE'>"; 
-    // else htmlText += "<p>"; 
+
     if(this.image) hasImageTag = "<br/><img src='images/" + this.image + "' alt='" + this.image + "' width='200px' height='200px'/>";
     htmlText += "<strong>" + day + "." + month + "." + this.date.getFullYear() + "</strong><br/>" + this.body +
         "<br/><em>" + this.signature + "</em>" + hasImageTag + "</p>"; 
@@ -136,10 +135,6 @@ function addBlogEntry(body, date, image)
 //         i++;
 //     }
 //     document.getElementById("blog").innerHTML = blogText;
-// }
-
-// function sho() {
-//     alert("nonexistent");
 // }
 
 // function addBlogEntry(body, date, image) 

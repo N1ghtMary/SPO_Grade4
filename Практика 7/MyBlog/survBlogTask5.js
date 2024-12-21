@@ -184,7 +184,6 @@ function addNote()
     newNoteDateHtml.classList.remove('is-invalid');
     if(!newNoteDateHtml.value)
     {
-        console.log(newNoteDate);
         newNoteDateHtml.classList.add('is-invalid');
         alert('Empty date');
         return;

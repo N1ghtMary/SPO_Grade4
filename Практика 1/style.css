@@ -14,7 +14,6 @@ body {
 }
 
 header {
-    /* background-color: var(--light-brown); */
     padding: 20px;
     text-align: center;
     border-bottom: 1px solid var(--medium-brown);
@@ -22,6 +21,7 @@ header {
     display: flex;    
     justify-content: center;
 }
+
 header > img
 {
     margin: 10px;
@@ -30,7 +30,6 @@ header > img
 nav {
     background-color: var(--dark-brown);
     color: var(--light-brown);
-    /* padding: 10px; */
 }
 
 #menu {

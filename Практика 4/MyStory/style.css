@@ -1,17 +1,4 @@
-/* .color-span {
-    display: inline-block;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-.color-span:hover {
-    opacity: 0.7; /* Эффект при наведении 
-}
-.blue-bg {
-    background-color: #007bff; /* Голубой фон 
-    color: white;
-} */
+
 span.decisionhover
 {
     font-weight:bold;

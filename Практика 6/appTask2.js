@@ -43,7 +43,6 @@ function task21CountLetters()
     }
     countCaseSensitiveSecondLetter = paragraph.split(secondLetter).length - 1;
 
-    //console.log(paragraph.split(secondLetter).length - 1);
     document.getElementById('task21CountLetters').style.display = 'block';
     document.getElementById('task21CountLetters').innerText = 
             `'п': ${countCaseInsensitiveFirstLetter}

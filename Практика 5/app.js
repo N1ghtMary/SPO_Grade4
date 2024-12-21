@@ -29,8 +29,6 @@ window.onload=function()
     Task 2
 */
 
-//var timerInterval;
-
 function task2StartTimer() 
 {
     var secondsInput = parseInt(document.getElementById('task2Seconds').value);
@@ -143,13 +141,6 @@ function task4Show()
 function task5FilterArray(arr) 
 {
     return arr.filter(item => 
-        // item !== null && 
-        // item !== 0 && 
-        // item !== '' && 
-        // item !== false && 
-        // item !== undefined && 
-        // !Number.isNaN(item) &&
-        // item !== NaN
         item // wth
     );
 }
@@ -163,7 +154,6 @@ function task5StringifyArray(arr)
         return item;
     });
 }
-
 
 /*
     Task 6
@@ -180,7 +170,6 @@ function task6TortureArray()
     var dividedArray = halfArray.filter(element => element % 3 === 1);
     document.getElementById("task6Divided").innerText = 
         `Divide into 3 with residue 1:\n${JSON.stringify(dividedArray)}`;
-
 
     var multiplicatedArray = beforeTortureArray.reduce((accumulator, currentValue) => accumulator * currentValue, 1); // initial value = 1
     document.getElementById("task6MultiplicatedArray").innerText = 

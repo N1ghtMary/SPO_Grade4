@@ -22,7 +22,6 @@ window.onload = function()
     });
     
     fabricResult.style.visibility='hidden';
-    console.log(fabric01 instanceof Object)
 }
 
 /*

@@ -35,7 +35,6 @@ function task2Birthday()
         minute: 'numeric'
     };
     var dateBirthday = BIRTHDAY.toLocaleDateString('ru-RU', options);
-    //var timeBirthday = BIRTHDAY.toLocaleTimeString();
     var timeZone = - new Date().getTimezoneOffset() / 60;
     var data = `${dateBirthday} (UTC${timeZone >= 0 ? '+' : ''}${timeZone})`;
     document.getElementById('task2').innerHTML = data;
@@ -69,7 +68,6 @@ function task3Divider()
 
 function task4ChangeNumber()
 {
-    //var userNumber = prompt('Введите число:');
     var parsedNumber = parseFloat(document.getElementById('task4Number').value);
     if (isNaN(parsedNumber)) 
     {
@@ -79,8 +77,6 @@ function task4ChangeNumber()
     var result = (9 / 14) * parsedNumber;
     document.getElementById('task4').innerHTML = `9/14 from ${parsedNumber} number: ${result}`;
 }
-
-
 
 /*
     Task 5

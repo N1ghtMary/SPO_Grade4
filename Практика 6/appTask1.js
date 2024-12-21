@@ -10,7 +10,6 @@ const syntheticSpecies = ["Fleece - " + fleecePrice, "Thermo - " + thermoPrice, 
 
 window.onload = function()
 {
-   //task12ChangeFabricType();
     document.getElementById('task15MessageError').style.display = 'none';
     document.querySelectorAll('.task14Error').forEach(function(element) 
     {
@@ -35,7 +34,6 @@ function task12ChangeFabricType()
         fabricSpeciesComboBoxItem.value = species;
         fabricSpeciesComboBoxItem.textContent = species;
         fabricSpeciesComboBox.appendChild(fabricSpeciesComboBoxItem);
-        //console.log(fabricSpeciesComboBoxItem)
     });
 }
 
@@ -58,7 +56,6 @@ function task14RegexPostcode()
     else 
     {
         postcodeError.style.display = 'none';
-        //postcodeError.innerHTML = ''; 
         return 1;
     }
 }
@@ -77,7 +74,6 @@ function task14RegexDeliveryDate()
     }    
     else 
     {
-        //deliveryDateError.innerHTML = '';
         deliveryDateError.style.display = 'none';
         return 1;
     }
@@ -159,7 +155,6 @@ function task14RegexEmail()
 
 function task15PlaceOrder()
 {
-    //console.log(document.querySelector('label[for=\''+document.querySelector('input[name="fabricType"]:checked').value+'\']').textContent);
     document.getElementById('task15OrderInfo').innerHTML = '';
     document.getElementById('task15MessageError').innerHTML = '';
     document.getElementById('task15MessageError').style.display = 'none';

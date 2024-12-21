@@ -12,8 +12,6 @@ function replaceNodeText(id, newText)
         nodeToChange.removeChild(nodeToChange.firstChild);
     }
     nodeToChange.appendChild(document.createTextNode(newText));
-    // nodeToChange.removeChild(nodeToChange.firstChild);
-    // nodeToChange.appendChild(document.createTextNode(newText));
 }    
 
 function clearHistory()
@@ -37,8 +35,6 @@ function changeScene(decision) {
             document.getElementById("decision2").style.display = "inline-block";
             document.getElementById("decision3").style.display = "inline-block";
             document.getElementById("clearSpan").style.display = "none";
-            //document.getElementById("decision2c").style.visibility = "visible";
-            //document.getElementById("decision3c").style.visibility = "visible";
             break;
 
         case 1: 
@@ -90,8 +86,6 @@ function changeScene(decision) {
                     message = "Упс, Вы были слишком громкими и разбудили собак. Вы решили забраться на валун, но долго оставаться там нельзя. С него видно обзорную площадку. Отправитесь к ней или углубитесь в лес?"
                     replaceNodeText("decision1", "Отправиться к обзорной площадке");
                     replaceNodeText("decision2", "Углубиться в лес");
-                    //replaceNodeText("decision3", "Возьму гаечный ключ");
-                    //document.getElementById("decision2").style.visibility = "visible";
                     document.getElementById("decision3").style.display = "none";
                     break;
 
@@ -122,7 +116,6 @@ function changeScene(decision) {
                 historyBadFinal++;
                 message = "На территории Вы нашли несколько полезных вещей и поняли, что мир преобразился, но у Вас недостаточно навыков для его освоения...";
                 replaceNodeText("decision1", "Попробовать снова");
-                //document.getElementById("decision1").style.display = "inline-block";
                 document.getElementById("decision2").style.display = "none";
                 document.getElementById("clearSpan").style.display = "inline-block";
             }
@@ -180,7 +173,6 @@ function changeScene(decision) {
                 message = "Дом был достаточно просторный и слегка поврежденный. Вы решили его починить и обосноваться там. В гараже Вы нашли велосипед. Хотите осмотреть город или остаться в доме?";
                 replaceNodeText("decision1", "В город!");
                 replaceNodeText("decision2", "Обустроить дом");
-                //document.getElementById("decision3").style.visibility = "hidden";
             }
             break;
 
@@ -248,7 +240,6 @@ function changeScene(decision) {
                     message = "Классовые задания повели вас по сложному начальному пути. Вам нужно выбраться в город и найти временное пристанище. Вы хотите поселиться на крыше пожарной части или в мастерской по ремонту автомобилей?";
                     replaceNodeText("decision1", "Пожарная часть");
                     replaceNodeText("decision2", "Мастерская");
-                    //document.getElementById("decision1").style.display = "inline-block";
                     document.getElementById("decision3").style.display = "none";
                     break;
                 
@@ -258,7 +249,6 @@ function changeScene(decision) {
                     message = "Вы понимали, что этот класс не дает особых преимуществ, но все равно выбрали его, ведь его квесты самые легкие. 10 соцветий золотарника, 10 листьев алоэ, 5 хризантем и вот Вы уже счастливый обладатель букета. Куда отправитесь на поиски моркови?";
                     replaceNodeText("decision1", "В супермаркет");
                     replaceNodeText("decision2", "На заправку");
-                    //document.getElementById("decision2").style.display = "inline-block";
                     document.getElementById("decision3").style.display = "none";
                     break;
                 
@@ -268,8 +258,6 @@ function changeScene(decision) {
                     message = "Вечные приключения и прерывистый сон - вот Ваш спутник. Задания выглядели так, будто Вы должны были заранее где-то все прочитать.";
                     replaceNodeText("decision1", "Отправиться в город на поиски библиотеки");
                     replaceNodeText("decision2", "Поискать загородный дом");
-                    //replaceNodeText("decision3", "Путешественник");
-                    //document.getElementById("decision2").style.display = "inline-block";
                     document.getElementById("decision3").style.display = "none";
                     break;
             }
@@ -323,7 +311,6 @@ function changeScene(decision) {
                 message = "Городская жизнь и вечная борьба за ресурсы не пришлась Вам по душе. Сменим обстановку?";
                 replaceNodeText("decision1", "ДА");
                 replaceNodeText("decision2", "Совсем немного");
-                //document.getElementById("decision2").style.display = "none";
             }
             else // traveler new home
             {
@@ -431,7 +418,6 @@ function changeScene(decision) {
                 message = "Вам не понравилось рассматривать чужие владения, и Вы укрепились в мысли, что лучше создать свои. С чего начнете строительство на том пустыре?";
                 replaceNodeText("decision1", "Дом");
                 replaceNodeText("decision2", "Грядки");
-                //document.getElementById("decision2").style.display = "none";
             }
             else // farmer gas station to the store megashop no
             {
